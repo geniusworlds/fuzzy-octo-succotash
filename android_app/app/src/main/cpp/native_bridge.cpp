@@ -1,11 +1,13 @@
 #include <jni.h>
 #include <string>
 #include <memory>
+#include <cstring>
+#include <algorithm>
 #include <android/bitmap.h>
-#include "../../../../ios_engine/macho_loader.hpp"
-#include "../../../../ios_engine/darwin_runtime.hpp"
-#include "../../../../ios_engine/arm64_core.hpp"
-#include "../../../../ios_engine/ios_compositor.hpp"
+#include "macho_loader.hpp"
+#include "darwin_runtime.hpp"
+#include "arm64_core.hpp"
+#include "ios_compositor.hpp"
 
 static std::shared_ptr<DarwinRuntime> g_runtime;
 static std::unique_ptr<Arm64Core> g_cpu;
@@ -34,7 +36,6 @@ Java_com_iosvm_emulator_MainActivity_nativeLoadApp(JNIEnv* env, jobject thiz, js
         return JNI_FALSE;
     }
 
-    // Map segments into virtual address space
     for (const auto& seg : loader.getSegments()) {
         if (!seg.data.empty()) {
             g_runtime->writeMemory(seg.vmaddr, seg.data.data(), seg.data.size());
@@ -56,7 +57,6 @@ Java_com_iosvm_emulator_MainActivity_nativeRenderFrame(JNIEnv* env, jobject thiz
     if (AndroidBitmap_getInfo(env, bitmap, &info) < 0) return;
     if (AndroidBitmap_lockPixels(env, bitmap, &pixels) < 0) return;
 
-    // Render iOS frame
     g_compositor->render(g_runtime);
 
     const uint32_t* src = g_compositor->getFramebuffer();
@@ -84,4 +84,4 @@ Java_com_iosvm_emulator_MainActivity_nativeGetLogs(JNIEnv* env, jobject thiz) {
     return env->NewStringUTF(allLogs.c_str());
 }
 
-} // extern "C"
+}

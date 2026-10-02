@@ -3,14 +3,19 @@ project("ios_vm_engine")
 
 set(CMAKE_CXX_STANDARD 17)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../../ios_engine)
+set(IOS_ENGINE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../../../ios_engine)
+
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${IOS_ENGINE_DIR}
+)
 
 add_library(ios_vm SHARED
     native_bridge.cpp
-    ../../../../ios_engine/macho_loader.cpp
-    ../../../../ios_engine/darwin_runtime.cpp
-    ../../../../ios_engine/arm64_core.cpp
-    ../../../../ios_engine/ios_compositor.cpp
+    ${IOS_ENGINE_DIR}/macho_loader.cpp
+    ${IOS_ENGINE_DIR}/darwin_runtime.cpp
+    ${IOS_ENGINE_DIR}/arm64_core.cpp
+    ${IOS_ENGINE_DIR}/ios_compositor.cpp
 )
 
 find_library(log-lib log)
