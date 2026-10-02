@@ -1,0 +1,37 @@
+name: C++ iOS Engine CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  test-engine:
+    name: Build & Test Engine (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Compile iOS HLE Engine
+        run: |
+          cd ios_engine
+          g++ -std=c++17 -O2 \
+            macho_loader.cpp \
+            darwin_runtime.cpp \
+            arm64_core.cpp \
+            ios_compositor.cpp \
+            test_runner.cpp \
+            -o test_runner
+
+      - name: Run Engine Verification Test
+        run: |
+          cd ios_engine
+          ./test_runner

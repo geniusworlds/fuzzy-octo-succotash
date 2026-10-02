@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#000000"
+    android:gravity="center">
+
+    <!-- Container replicating iPhone aspect ratio (19.5:9) -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="360dp"
+        android:layout_height="720dp"
+        android:layout_margin="16dp"
+        android:background="#FFFFFF">
+
+        <ImageView
+            android:id="@+id/ios_display_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:contentDescription="iOS Screen Framebuffer" />
+
+    </androidx.cardview.widget.CardView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#121212"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/console_log_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#00FF66"
+            android:fontFamily="monospace"
+            android:textSize="11sp"
+            android:text="System Initializing..." />
+    </ScrollView>
+
+</LinearLayout>
